@@ -36,8 +36,9 @@ class SiteController extends Controller
 		if ($form->load(Yii::$app->request->post()) && $form->validate()) {
 			$post = Yii::$app->request->post();
 			$f_id = (int) $post['Student']['faculty_id'];
+			$sex = $post['Student']['sex'];
 
-			if ($form->countStudents($f_id)) {
+			if ($form->baseStudentsLimit($f_id) && $form->studentsLimitByFaculty($f_id, $sex)) {
 				if ( $form->save() ) {
 					Yii::$app->session->addFlash( 'success',
 						'Пользователь зарегистрирован' );
@@ -48,7 +49,7 @@ class SiteController extends Controller
 					return $this->redirect( [ 'index' ] );
 				}
 			} else {
-				Yii::$app->session->addFlash( 'success',
+				Yii::$app->session->addFlash( 'danger',
 					'Факультет переполнен, попробуйте в следующем году' );
 				return $this->redirect( [ 'index' ] );
 			}
