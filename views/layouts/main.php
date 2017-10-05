@@ -39,6 +39,7 @@ AppAsset::register($this);
         'items' => [
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'Зачисленные студенты', 'url' => ['/student/index']],
+	        ['label' => 'Расписание', 'url' => ['/schedule/index']],
         ],
     ]);
     NavBar::end();
