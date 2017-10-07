@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\Student;
+use Faker;
 
 class SiteController extends Controller
 {
@@ -54,5 +55,33 @@ class SiteController extends Controller
 				return $this->redirect( [ 'index' ] );
 			}
 		}
+	}
+
+	public function actionGenerate()
+	{
+		while (!Student::isFullUniversity()) {
+			$student  = new Student();
+			$fakeUser = Faker\Factory::create( 'uk_UA' );
+
+			$student->sex = $fakeUser->randomElement( $array = array( 'male', 'female' ) );
+
+			if ( $student->sex == 'male' ) {
+				$student->firstname = $fakeUser->firstNameMale;
+			} else {
+				$student->firstname = $fakeUser->firstNameFemale;
+			}
+			$student->lastname   = $fakeUser->lastName;
+			$student->email      = $fakeUser->email;
+			$student->faculty_id = rand( 1, 3 );
+
+			if ( $student->baseStudentsLimit( $student->faculty_id )
+			     && $student->studentsLimitByFaculty( $student->faculty_id, $student->sex )
+			) {
+				$student->save();
+			}
+		}
+		Yii::$app->session->addFlash( 'success',
+			'Пользователи сгенерированы' );
+		return $this->redirect( [ 'index' ] );
 	}
 }
