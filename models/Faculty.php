@@ -16,4 +16,10 @@ class Faculty extends ActiveRecord
 	{
 		return 'faculties';
 	}
+
+	public static function countFaculties()
+	{
+		return Faculty::find()->count();
+	}
+
 }
