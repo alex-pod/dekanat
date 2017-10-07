@@ -8,6 +8,7 @@
 
 namespace app\models;
 use yii\db\ActiveRecord;
+use app\models\Faculty;
 
 class Student extends ActiveRecord
 {
@@ -26,6 +27,7 @@ class Student extends ActiveRecord
 		return [
 			[['email', 'firstname', 'lastname', 'faculty_id', 'sex'], 'required'],
 			[['email'], 'email'],
+			[['firstname', 'lastname', 'faculty_id', 'sex'], 'safe'],
 		];
 	}
 
@@ -38,6 +40,21 @@ class Student extends ActiveRecord
 			'faculty_id' => 'Факультет',
 			'sex' => 'Пол',
 		);
+	}
+
+	public static function isFullUniversity()
+	{
+		$numFaculties = (int) Faculty::countFaculties();
+		$studentsAtFaculty = [];
+		for ($i = 1; $i <= $numFaculties; $i++) {
+			$studentsAtFaculty[] = (int) Student::find()->where('faculty_id = :faculty_id', [':faculty_id' => $i])->count();
+		}
+		foreach ($studentsAtFaculty as $faculty) {
+			if ($faculty < 21) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public function baseStudentsLimit($f_id)
