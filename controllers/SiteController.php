@@ -84,4 +84,12 @@ class SiteController extends Controller
 			'Пользователи сгенерированы' );
 		return $this->redirect( [ 'index' ] );
 	}
+
+	public function actionDropStudents()
+	{
+		Student::dropStudents();
+		Yii::$app->session->addFlash( 'success',
+			'Пользователи удалены' );
+		return $this->redirect( [ 'index' ] );
+	}
 }
