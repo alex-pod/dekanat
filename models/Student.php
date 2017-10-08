@@ -94,6 +94,11 @@ class Student extends ActiveRecord
 		}
 	}
 
+	public static function dropStudents()
+	{
+		Student::deleteAll();
+	}
+
 	public function getFaculty()
 	{
 		return $this->hasOne(Faculty::className(), ['id' => 'faculty_id']);
