@@ -52,6 +52,7 @@ $this->title = 'Деканат';
             <?php endif; ?>
 
         </div>
-        <a href="?r=site/generate">Сгенерировать студентов</a>
+        <a href="?r=site/generate">Сгенерировать студентов</a><br>
+        <a href="?r=site/drop-students">Удалить всех студентов</a>
     </div>
 </div>
