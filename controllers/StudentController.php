@@ -32,4 +32,23 @@ class StudentController extends Controller
 			'pages' => $pages,
 		]);
 	}
+
+	public function actionTile()
+	{
+		$query = Student::find()
+		                ->select('firstname, lastname, email, faculty_id')
+		                ->with('faculty');
+		$pages = new Pagination([
+			'totalCount' => $query->count(),
+			'pageSize' => 12,
+			'pageSizeParam' => false,
+			'forcePageParam' => false
+		]);
+		$students = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+		return $this->render('tile', [
+			'students' => $students,
+			'pages' => $pages,
+		]);
+	}
 }
